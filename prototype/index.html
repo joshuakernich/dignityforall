@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dignity For All</title>
+  <script type="text/javascript" src="./jquery-3.3.1.min.js"></script>
+  <script type="text/javascript">
+    $(function(){
+
+      function makeClippedVideo(o){
+        var w = 854;
+        var h = 480;
+        var src = o.src?o.src:'./clip.mp4';
+        var $el = o.$el?o.$el:$('<div>');
+        var $mask = $('<div class="clipped-video">').appendTo($el)
+        $mask.css({width:o.w,height:o.h})
+
+        var $video = $('<video src="'+src+'" autoplay muted loop>').appendTo($mask)
+
+
+        if(o.scale)$video.css({'transform-origin':'left top',transform:'scale('+o.scale+')'})
+        if(o.fx != undefined){
+          $video.css({
+            left:-o.fx+o.w/2+'px',
+            top:-o.fy+o.h/2+'px',
+            'transform-origin':''+o.fx+'px '+o.fy+'px',
+          })
+        }
+
+        var isRewinding = false;
+        var finishedAtTime = 0;
+
+        if(o.startAt){
+          $video[0].addEventListener('timeupdate', function() {
+
+            if(!$(this).is(":visible")){
+              $video[0].pause();
+              if(isRewinding){
+                clearInterval(interval);
+                isRewinding = false;
+              }
+              return;
+            }
+
+            if(this.currentTime<o.startAt) this.currentTime = o.startAt;
+
+            if(this.currentTime>o.endAt){
+              if(o.boomerang && !isRewinding){
+                this.currentTime = o.endAt;
+                finishedAtTime = new Date().getTime();
+                this.pause();
+                isRewinding = true;
+
+                var interval = setInterval(function(){
+
+                  var nowAtTime = new Date().getTime();
+                  this.currentTime = o.endAt-(nowAtTime-finishedAtTime)/1000;
+                  if(this.currentTime<o.startAt){
+                    this.currentTime = o.startAt;
+                    this.play();
+                    isRewinding = false;
+                    clearInterval(interval);
+                  }
+                }.bind(this),50);
+
+
+
+
+              } else {
+                this.currentTime = o.startAt;
+              }
+            }
+          }, false);
+        }
+
+        return $el;
+      }
+
+      
+      makeClippedVideo({boomerang:false,startAt:12.5,endAt:13.5,fx:440,fy:250,scale:0.15,w:50,h:50,$el:$('.quest-part').eq(0)})
+      makeClippedVideo({boomerang:false,startAt:7,endAt:8,fx:440,fy:150,scale:0.2,w:50,h:50,$el:$('.quest-part').eq(1)})
+      makeClippedVideo({boomerang:false,startAt:9.5,endAt:11,fx:440,fy:150,scale:0.2,w:50,h:50,$el:$('.quest-part').eq(2)})
+      makeClippedVideo({boomerang:false,startAt:22,endAt:23.5,fx:440,fy:70,scale:0.5,w:50,h:50,$el:$('.quest-part').eq(3)})
+  
+      makeClippedVideo({boomerang:true,startAt:22,endAt:23.5,fx:440,fy:70,scale:0.5,w:50,h:50,$el:$('.video.kimberly')})
+      makeClippedVideo({boomerang:true,startAt:17,endAt:23.5,fx:427,fy:240,scale:1,w:480,h:480,$el:$('.video.opening')})
+      makeClippedVideo({boomerang:true,startAt:13,endAt:16,fx:427,fy:240,scale:1,w:480,h:480,$el:$('.video.bullying')})
+      makeClippedVideo({boomerang:true,startAt:41,endAt:47,fx:500,fy:240,scale:1,w:480,h:480,$el:$('.video.discuss')})
+
+      var iSection = 0;
+      var iPage = -1;
+
+      function nextSection(){
+        iPage=-1;
+        iSection++;
+        nextPage();
+      }
+
+      function nextPage(){
+        iPage++;
+
+        var $sec = $('.content-section').hide().eq(iSection).show();
+        $('.wayfinding-section').removeClass('active').eq(iSection).addClass('active');
+        $sec.find('.content-page').hide();
+
+        $('.station').removeClass('active').hide().each(function(i){
+          if(i<$sec.find('.content-page').length){
+            $(this).show();
+            if(i<=iPage)$(this).addClass('active');
+          } 
+        });
+
+        if($sec.find('.content-page').length<(iPage+1)){
+          nextSection();
+          return;
+        }
+
+        $sec.find('.content-page').eq(iPage).show();
+
+        var n = 10;
+        $('.content-page').eq(iPage).find('.line').stop().css({opacity:0,left:50}).each(function(i){
+          $(this).delay(n*30).animate({opacity:1,left:0});
+          n += $(this)[0].innerText.length;
+          n += 3;
+        })
+
+        $('button.next').stop().removeClass('flash').delay(n*30).queue(function(){
+          $(this).addClass('flash');
+        })
+      }
+
+      //nextPage();
+
+      $('button.next').click(nextPage.bind(this));
+
+      $('.wayfinding').hide();
+      $('.stations').hide();
+      $('.content').hide();
+      $('button.next').hide();
+
+      $('.quest').eq(0).click(function(){
+        $('.menu').hide();
+        $('.wayfinding').show();
+        $('.stations').show();
+        $('.content').show();
+        $('button.next').show();
+        nextPage();
+      }.bind(this));
+
+    });
+  </script>
+  <style type="text/css">
+    @import url('https://fonts.googleapis.com/css?family=Noto+Serif+JP');
+
+    body{
+      font-family: 'Noto Serif JP', sans-serif;
+      padding: 0px;
+      margin: 0px;
+    }
+
+
+    .clipped-video video{
+      position: absolute;
+    }
+
+    .wayfinding{
+      background: linear-gradient(to right,#20C2E1,#A094EE);
+      padding-left: 90px;
+      position: relative;
+      height: 50px;
+    }
+
+    .wayfinding-intro{
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border: 4px solid #20C2E1;
+      border-radius: 100px;
+      left: 10px;
+      top: 3px;
+      background: white;
+      overflow: hidden;
+    }
+
+    .wayfinding-section{
+      display: inline-block;
+      padding-left: 50px;
+      line-height: 50px;
+      color: white;
+      min-width: 50px;
+      height: 50px;
+      
+      background-size: 24px;
+      background-position: 12px center;
+      background-repeat: no-repeat;
+      white-space: nowrap;
+      box-sizing: border-box;
+
+      vertical-align: top;
+      cursor: pointer;
+      color: #333;
+      opacity: 0.2;
+    }
+
+    .wayfinding-section .label{
+      display: none;
+      margin-right: 15px;
+    }
+
+    .wayfinding-section.active{
+      opacity: 1;
+    }
+
+    .wayfinding-section.active .label{
+      display: inline-block;
+    }
+
+    .wayfinding-section.break-it-down{
+      background-image: url('./icon-thoughts.png');
+    }
+
+    .wayfinding-section.we-got-game{
+      background-image: url('./icon-game.png');
+    }
+
+    .wayfinding-section.behind-the-scenes{
+      background-image: url('./icon-clapper.png');
+    }
+
+    .wayfinding-section.just-the-facts{
+      background-image: url('./icon-magnifying-glass.png');
+    }
+
+    .wayfinding-section.final-challenge{
+      background-image: url('./icon-bullseye.png');
+    }
+
+    
+
+    .stations{
+      padding: 10px 90px;
+    }
+
+    .station{
+      width: 30px;
+      height: 5px;
+      background: #ccc;
+      display: inline-block;
+      margin-right: 2px;
+    }
+
+    .station.active{
+      background: #777;
+    }
+
+    .clipped-video{
+      position: relative;
+      overflow: hidden;
+    }
+
+    .insta{
+      border: 1px solid #999;
+      border-radius: 5px;
+      display: inline-block;
+      overflow: hidden;
+    }
+
+    .content-page{
+      padding-left: 90px;
+    }
+
+    .story{
+      display: inline-block;
+      width: 500px;
+      vertical-align: top;
+      padding-left: 20px;
+      font-size: 20px;
+    }
+
+    .story .line{
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .navigation{
+      position: fixed;
+      right: 0px;
+      bottom: 0px;
+    }
+
+    .navigation button.next{
+      width: 150px;
+      height: 150px;
+      font-size: 100px;
+      background: none;
+      border: none;
+      color: #777;
+      outline: none;
+      cursor: pointer;
+      opacity: 0.2;
+      transition: all 0.1s;
+    }
+
+    .navigation button.next:hover{
+      opacity: 1;
+    }
+
+    .navigation button.next.flash{
+      color: orange;
+      opacity: 0.8;
+    }
+
+    .quest{
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      display: inline-block;
+      text-align: left;
+      background: white; 
+      margin:20px;
+    }
+
+    .quest-parts{
+      padding: 10px 20px;
+    }
+
+    .quest-part{
+      border: 2px solid #20C2E1;
+      width: 50px;
+      height: 50px;
+      background: white;
+      border-radius: 50px;
+      display: inline-block;
+      overflow: hidden;
+    }
+
+    .quest-name{
+      background: linear-gradient(to right,#20C2E1,#A094EE);
+      padding: 10px 20px;
+    }
+
+    .quest:nth-of-type(2) .quest-name{background: linear-gradient(to right,#83D3C5,#6BB220);}
+    .quest:nth-of-type(3) .quest-name{background: linear-gradient(to right,#FAAA7F,#FB521F);}
+    .quest:nth-of-type(4) .quest-name{background: linear-gradient(to right,#DE8DA3,#C997EE);}
+
+    .quest:nth-of-type(2) .quest-part{ border-color:#83D3C5; }
+    .quest:nth-of-type(3) .quest-part{ border-color:#FAAA7F; }
+    .quest:nth-of-type(4) .quest-part{ border-color:#DE8DA3; }
+
+
+
+    .menu{
+      text-align: center;
+      background: #eee;
+      padding: 50px;
+      min-height: 100vh;
+    }
+
+    .quest-launch{
+      background: #ddd;
+      padding: 10px 20px;
+      text-align: right;
+      cursor: pointer;
+    }
+
+    .quest-launch:after{
+      content: "Launch >";
+    }
+
+    .menu h1{
+      margin-top: 0px;
+      font-size: 50px;
+    }
+
+
+
+  </style>
+</head>
+<body>
+  <div class="menu">
+    <h1>Dignity For All</h1>
+    <div class='quest'>
+      <div class='quest-name'>Quest 1 - What Is Bullying?</div>
+      <div class='quest-parts'>
+        <div class="quest-part"></div>
+        <div class="quest-part"></div>
+        <div class="quest-part"></div>
+        <div class="quest-part"><div class="video"></div></div>
+      </div>
+      <div class='quest-launch'></div>
+    </div>
+    <div class='quest'>
+      <div class='quest-name'>Quest 2 - What Is Bullying?</div>
+      <div class='quest-parts'>
+        <div class="quest-part"></div>
+        <div class="quest-part"></div>
+        <div class="quest-part"></div>
+        <div class="quest-part"><div class="video"></div></div>
+      </div>
+      <div class='quest-launch'></div>
+    </div><br>
+    <div class='quest'>
+      <div class='quest-name'>Quest 3 - What Is Bullying?</div>
+      <div class='quest-parts'>
+        <div class="quest-part"></div>
+        <div class="quest-part"></div>
+        <div class="quest-part"></div>
+        <div class="quest-part"><div class="video"></div></div>
+      </div>
+      <div class='quest-launch'></div>
+    </div>
+    <div class='quest'>
+      <div class='quest-name'>Quest 4 - What Is Bullying?</div>
+      <div class='quest-parts'>
+        <div class="quest-part"></div>
+        <div class="quest-part"></div>
+        <div class="quest-part"></div>
+        <div class="quest-part"><div class="video"></div></div>
+      </div>
+      <div class='quest-launch'></div>
+    </div>
+  </div>
+  <div class='wayfinding'>
+    <div class='wayfinding-intro'><div class="video kimberly"></div></div>
+    <div class='wayfinding-section break-it-down'><div class="label">Break it Down</div>
+    </div><div class='wayfinding-section behind-the-scenes'><div class="label">Behind the Scenes</div>
+    </div><div class='wayfinding-section just-the-facts'><div class="label">Just the Facts</div>
+    </div><div class='wayfinding-section we-got-game'><div class="label">We Got Game</div>
+    </div><div class='wayfinding-section final-challenge'><div class="label">Final Challenge</div></div>
+  </div>
+  <div class='stations'>
+    <div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div>
+  </div>
+  <div class='content'>
+    <div class='content-section'>
+      <div class="content-page">
+        <div class='video opening insta'></div>
+        <div class='story'>
+          <div class='line'>Kimberly Seymour looks upset after reading a post.</div>
+          <div class='line'>Kimberly used to be friends with the three girls who posted about her online. They were all in the same classes last year, ate lunch together every day, and went to the mall after school.</div>
+          <div class='line'>Kimberly is a victim of Cyberbullying.</div>
+        </div>
+      </div>
+      <div class="content-page">
+        <div class='video bullying insta'></div>
+        <div class='story'>
+          <div class='line'>What exactly does Cyberbullying look like?</div>
+          <div class='line'>Let's take a look...</div>
+        </div>
+      </div>
+      <div class="content-page">
+        Khan Video?
+      </div>
+      <div class="content-page">
+        <div class='video insta discuss'></div>
+        <div class="story">
+          <div class='line'>Discuss the following questions with your class.</div>
+          <div class='line'>💡 What are the characteristics of cyberbullying?</div>
+          <div class='line'>💡 What are the ways that cyberbullying can cause more harm?</div>
+          <div class='line'>💡 How has research changed the way we address cyberbullying?</div>
+        </div>
+      </div>
+    </div>
+    <div class='content-section'>
+      <div class='content-page'>Section 2 Page 1</div>
+    </div>
+    <div class='content-section'>
+      <div class='content-page'>Section 3 Page 1</div>
+    </div>
+    <div class='content-section'>
+      <div class='content-page'>Section 4 Page 1</div>
+    </div>
+    <div class='content-section'>
+      <div class='content-page'>Section 5 Page 1</div>
+    </div>
+  </div>
+  <div class='navigation'><button class='next'>⇨</button></div>
+</body>
+</html>
