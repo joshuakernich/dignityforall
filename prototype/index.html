@@ -85,6 +85,7 @@
       makeClippedVideo({boomerang:true,startAt:17,endAt:23.5,fx:427,fy:240,scale:1,w:480,h:480,$el:$('.video.opening')})
       makeClippedVideo({boomerang:true,startAt:13,endAt:16,fx:427,fy:240,scale:1,w:480,h:480,$el:$('.video.bullying')})
       makeClippedVideo({boomerang:true,startAt:41,endAt:47,fx:500,fy:240,scale:1,w:480,h:480,$el:$('.video.discuss')})
+      makeClippedVideo({boomerang:true,startAt:22,endAt:23.5,fx:550,fy:240,scale:1,w:480,h:480,$el:$('.video.backstory')})
 
       var iSection = 0;
       var iPage = -1;
@@ -99,7 +100,12 @@
         iPage++;
 
         var $sec = $('.content-section').hide().eq(iSection).show();
-        $('.wayfinding-section').removeClass('active').eq(iSection).addClass('active');
+
+        $('.wayfinding-section').removeClass('active visited').eq(iSection).addClass('active')
+        for(var i=0;i<=iSection;i++){
+          $('.wayfinding-section').eq(i).addClass('visited');
+        }
+        
         $sec.find('.content-page').hide();
 
         $('.station').removeClass('active').hide().each(function(i){
@@ -116,14 +122,14 @@
 
         $sec.find('.content-page').eq(iPage).show();
 
-        var n = 10;
-        $('.content-page').eq(iPage).find('.line').stop().css({opacity:0,left:50}).each(function(i){
-          $(this).delay(n*30).animate({opacity:1,left:0});
-          n += $(this)[0].innerText.length;
-          n += 3;
+        var n = 1000;
+        $sec.find('.content-page').eq(iPage).find('.line').stop().css({opacity:0,left:50}).each(function(i){
+          $(this).delay(n).animate({opacity:1,left:0});
+          //n += $(this)[0].innerText.length;
+          n+= 2000;
         })
 
-        $('button.next').stop().removeClass('flash').delay(n*30).queue(function(){
+        $('button.next').stop().removeClass('flash').delay(n).queue(function(){
           $(this).addClass('flash');
         })
       }
@@ -206,7 +212,7 @@
       margin-right: 15px;
     }
 
-    .wayfinding-section.active{
+    .wayfinding-section.visited{
       opacity: 1;
     }
 
@@ -460,7 +466,12 @@
       </div>
     </div>
     <div class='content-section'>
-      <div class='content-page'>Section 2 Page 1</div>
+      <div class='content-page'>
+        <div class='video insta backstory'></div>
+        <div class='story'>
+          <div class='line'>Kimberly Seymour used to be friends with the three girls in the same classes last year. As the year went on, however, Kimberly’s mother would not let her hang out after school. Instead, Kimberly had to come home and do her homework. It was true that more than anything else, she wanted to be a lawyer when she grew up and wanted to get a scholarship to a good school, but it was also true that it was really hard for her to tell her friends.</div><div class='line'>She could feel that something was wrong—almost like they were insulted. When eighth grade started, Kimberly was placed in advanced academic classes and none of her old friends were in any of her classes anymore. After just a few weeks, she began to notice her friends ignoring her.</div><div class='line'>There were a few times that she tried to hang out with them before class, and coldly they just moved away from her. After a few more weeks, she started reading rumors and seeing humiliating photos on Snapchat.</div>
+        </div>
+      </div>
     </div>
     <div class='content-section'>
       <div class='content-page'>Section 3 Page 1</div>
