@@ -81,10 +81,12 @@
       makeClippedVideo({boomerang:false,startAt:9.5,endAt:11,fx:440,fy:150,scale:0.2,w:50,h:50,$el:$('.quest-part').eq(2)})
       makeClippedVideo({boomerang:false,startAt:22,endAt:23.5,fx:440,fy:70,scale:0.5,w:50,h:50,$el:$('.quest-part').eq(3)})
   
-      makeClippedVideo({boomerang:true,startAt:22,endAt:23.5,fx:440,fy:70,scale:0.5,w:50,h:50,$el:$('.video.kimberly')})
       makeClippedVideo({boomerang:true,startAt:17,endAt:23.5,fx:427,fy:240,scale:1,w:480,h:480,$el:$('.video.opening')})
+      makeClippedVideo({boomerang:true,startAt:22,endAt:23.5,fx:440,fy:70,scale:0.5,w:50,h:50,$el:$('.video.kimberly')})
       makeClippedVideo({boomerang:true,startAt:13,endAt:16,fx:427,fy:240,scale:1,w:480,h:480,$el:$('.video.bullying')})
       makeClippedVideo({boomerang:true,startAt:41,endAt:47,fx:500,fy:240,scale:1,w:480,h:480,$el:$('.video.discuss')})
+
+      makeClippedVideo({boomerang:false,startAt:19,endAt:21.5,fx:500,fy:240,scale:1,w:480,h:480,$el:$('.video.deeper')})
       makeClippedVideo({boomerang:true,startAt:22,endAt:23.5,fx:550,fy:240,scale:1,w:480,h:480,$el:$('.video.backstory')})
 
       var iSection = 0;
@@ -93,7 +95,8 @@
       function nextSection(){
         iPage=-1;
         iSection++;
-        nextPage();
+        if(iSection<$('.content-section').length) nextPage();
+        
       }
 
       function nextPage(){
@@ -466,6 +469,12 @@
       </div>
     </div>
     <div class='content-section'>
+      <div class='content-page'>
+        <div class='video insta deeper'></div>
+        <div class='story'>
+          <div class='line'>Let's look at Kimberly's story a little deeper.</div>
+        </div>
+      </div>
       <div class='content-page'>
         <div class='video insta backstory'></div>
         <div class='story'>
