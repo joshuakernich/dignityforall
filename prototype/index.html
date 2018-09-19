@@ -60,7 +60,7 @@
                     isRewinding = false;
                     clearInterval(interval);
                   }
-                }.bind(this),50);
+                }.bind(this),100);
 
 
 
@@ -164,6 +164,9 @@
       font-family: 'Noto Serif JP', sans-serif;
       padding: 0px;
       margin: 0px;
+
+      background-image: url(./bg-forest.png);
+      background-size: cover;
     }
 
 
@@ -172,93 +175,150 @@
     }
 
     .wayfinding{
-      background: linear-gradient(to right,#20C2E1,#A094EE);
-      padding-left: 90px;
+      background: #78D079;
       position: relative;
+      height: 60px;
+      margin-top: 50px;
+      border-top: 3px solid black;
+      position: fixed;
+      bottom: 0px;
+      left: 0px;
+      right: 0px;
+    }
+
+    .wayfinding-sky{
+      height: 0px;
+      position: absolute;
+      top: -50px;
+      left: 0px;
+      width: 100%;
+      background-image: url('./bg-forest.png');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .wayfinding-pathway{
+      width: 500px;
       height: 50px;
+      position: absolute;
+      top: 5px;
+      left: 30px;
+      background-image: url('./pathway.png');
     }
 
     .wayfinding-intro{
       position: absolute;
-      width: 50px;
-      height: 50px;
-      border: 4px solid #20C2E1;
-      border-radius: 100px;
-      left: 10px;
-      top: 3px;
-      background: white;
-      overflow: hidden;
+      width: 70px;
+      height: 100px;
+      left: 20px;
+      top: -82px;
+      background-image: url('./place.png');
     }
 
     .wayfinding-section{
       display: inline-block;
-      padding-left: 50px;
-      line-height: 50px;
-      color: white;
-      min-width: 50px;
-      height: 50px;
-      
+      width: 20px;
+      height: 20px;
+      background: #999;
+      border: 3px solid black;
+      position: absolute;
+      border-radius: 100px;
       background-size: 24px;
-      background-position: 12px center;
+      background-position: center;
       background-repeat: no-repeat;
-      white-space: nowrap;
-      box-sizing: border-box;
-
-      vertical-align: top;
-      cursor: pointer;
-      color: #333;
-      opacity: 0.2;
+      top: 5px;
     }
 
     .wayfinding-section .label{
       display: none;
-      margin-right: 15px;
+      position: absolute;
+      left: 50px;
+      top: -85px;
+      white-space: nowrap;
+      font-size: 20px;
+      font-weight: bold;
     }
 
     .wayfinding-section.visited{
-      opacity: 1;
+      background: white;
     }
 
     .wayfinding-section.active .label{
-      display: inline-block;
+      display: block;
     }
 
+    .wayfinding-section.active:before{
+      content: "";
+      display: block;
+      width: 70px;
+      height: 100px;
+      background-image: url('./place-white.png');
+      position: absolute;
+      top: -100px;
+      left: -25px;
+    }
+
+    .wayfinding-section.active:after{
+      content: "";
+      display: block;
+      width: 24px;
+      height: 24px;
+      background-size: 24px;
+      position: absolute;
+      top: -80px;
+      left: 0px;
+    }
+
+    .wayfinding-section.break-it-down:after{background-image: url('./icon-thoughts.png');}
+    .wayfinding-section.we-got-game:after{background-image: url('./icon-game.png');}
+    .wayfinding-section.behind-the-scenes:after{background-image: url('./icon-clapper.png');}
+    .wayfinding-section.just-the-facts:after{background-image: url('./icon-magnifying-glass.png');}
+    .wayfinding-section.final-challenge:after{background-image: url('./icon-bullseye.png');}
+
     .wayfinding-section.break-it-down{
-      background-image: url('./icon-thoughts.png');
+      
+      left: 120px;
     }
 
     .wayfinding-section.we-got-game{
-      background-image: url('./icon-game.png');
+      left: 415px;
+      top: 20px;
     }
 
     .wayfinding-section.behind-the-scenes{
-      background-image: url('./icon-clapper.png');
+      top: 27px;
+      left: 210px;
     }
 
     .wayfinding-section.just-the-facts{
-      background-image: url('./icon-magnifying-glass.png');
+      left: 312px;
+      top:10px;
     }
 
     .wayfinding-section.final-challenge{
-      background-image: url('./icon-bullseye.png');
+      left: 505px;
+      top: 3px;
     }
 
     
 
     .stations{
       padding: 10px 90px;
+      text-align: center;
     }
 
     .station{
-      width: 30px;
-      height: 5px;
-      background: #ccc;
+      width: 8px;
+      height: 8px;
+      border-radius: 100px;
+      background: white;
       display: inline-block;
-      margin-right: 2px;
+      margin: 0px 2px;
+      opacity: 0.3;
     }
 
     .station.active{
-      background: #777;
+      opacity: 1;
     }
 
     .clipped-video{
@@ -273,16 +333,26 @@
       overflow: hidden;
     }
 
+    .content{
+      text-align: center;
+    }
+
     .content-page{
-      padding-left: 90px;
+      width: 1000px;
+      text-align: left;
+      display: inline-block;
+      border: 1px solid #999;
+      background: white;
+      padding: 10px;
+      border-radius: 5px;
     }
 
     .story{
       display: inline-block;
-      width: 500px;
+      width: 490px;
       vertical-align: top;
       padding-left: 20px;
-      font-size: 20px;
+      font-size: 18px;
     }
 
     .story .line{
@@ -293,7 +363,7 @@
     .navigation{
       position: fixed;
       right: 0px;
-      bottom: 0px;
+      bottom: 50px;
     }
 
     .navigation button.next{
@@ -319,31 +389,65 @@
     }
 
     .quest{
-      border: 1px solid #ddd;
-      border-radius: 5px;
+      
       display: inline-block;
       text-align: left;
-      background: white; 
-      margin:20px;
+      width: 500px;
+      height: 340px;
+      background-image: url('./island.png');
+      background-position: bottom center;
+      position: relative;
+      background-repeat: no-repeat;
     }
 
     .quest-parts{
       padding: 10px 20px;
+      display: flex;
+      justify-content: space-evenly;
     }
 
     .quest-part{
-      border: 2px solid #20C2E1;
-      width: 50px;
-      height: 50px;
-      background: white;
-      border-radius: 50px;
+      width: 70px;
+      height: 100px;
       display: inline-block;
-      overflow: hidden;
+      position: relative;
+      background-image: url('./place.png');
+      position: absolute;
     }
 
+    .wayfinding-intro .clipped-video, .quest-part .clipped-video{
+      border-radius: 100px;
+      position: absolute;
+      left: 10px;
+      top: 10px;
+    }
+
+    .quest-part:nth-of-type(1){
+      top: -1px;
+      left: 20px;
+    }
+
+    .quest-part:nth-of-type(2){
+      top: 17px;
+      left: 119px;
+    }
+
+    .quest-part:nth-of-type(3){
+      top: 0px;
+      left: 218px;
+    }
+
+    .quest-part:nth-of-type(4){
+      top: 14px;
+      left: 318px;
+    }
+
+
     .quest-name{
-      background: linear-gradient(to right,#20C2E1,#A094EE);
-      padding: 10px 20px;
+      text-align: center;
+      font-size: 25px;
+      
+      margin-top: 170px;
     }
 
     .quest:nth-of-type(2) .quest-name{background: linear-gradient(to right,#83D3C5,#6BB220);}
@@ -358,76 +462,74 @@
 
     .menu{
       text-align: center;
-      background: #eee;
       padding: 50px;
       min-height: 100vh;
     }
 
     .quest-launch{
-      background: #ddd;
       padding: 10px 20px;
       text-align: right;
       cursor: pointer;
+      position: absolute;
+      right: 0px;
+      bottom: 0px;
+      font-weight: bold;
+      font-size: 40px;
     }
 
     .quest-launch:after{
-      content: "Launch >";
+      content: "Go >";
+
     }
 
     .menu h1{
       margin-top: 0px;
-      font-size: 50px;
+      width: 400px;
+      height: 200px;
+      background-image: url('./logo.png');
+      background-position: center;
+      display: inline-block;
     }
 
+    .menu h2{
+      margin: 0px;
+    }
+
+    .menu h3{
+      margin: 0px;
+      font-size: 17px;
+    }
+
+    .quest-mountain{
+      width: 100%;
+      height: 30px;
+      margin: 0px;
+      display: block;
+      fill: linear-gradient(to right,#20C2E1,#A094EE);
+    }
 
 
   </style>
 </head>
 <body>
   <div class="menu">
-    <h1>Dignity For All</h1>
+    <h1></h1><br>
     <div class='quest'>
-      <div class='quest-name'>Quest 1 - What Is Bullying?</div>
+      
       <div class='quest-parts'>
         <div class="quest-part"></div>
         <div class="quest-part"></div>
         <div class="quest-part"></div>
         <div class="quest-part"><div class="video"></div></div>
       </div>
-      <div class='quest-launch'></div>
-    </div>
-    <div class='quest'>
-      <div class='quest-name'>Quest 2 - What Is Bullying?</div>
-      <div class='quest-parts'>
-        <div class="quest-part"></div>
-        <div class="quest-part"></div>
-        <div class="quest-part"></div>
-        <div class="quest-part"><div class="video"></div></div>
-      </div>
-      <div class='quest-launch'></div>
-    </div><br>
-    <div class='quest'>
-      <div class='quest-name'>Quest 3 - What Is Bullying?</div>
-      <div class='quest-parts'>
-        <div class="quest-part"></div>
-        <div class="quest-part"></div>
-        <div class="quest-part"></div>
-        <div class="quest-part"><div class="video"></div></div>
-      </div>
-      <div class='quest-launch'></div>
-    </div>
-    <div class='quest'>
-      <div class='quest-name'>Quest 4 - What Is Bullying?</div>
-      <div class='quest-parts'>
-        <div class="quest-part"></div>
-        <div class="quest-part"></div>
-        <div class="quest-part"></div>
-        <div class="quest-part"><div class="video"></div></div>
-      </div>
+      
+      <div class='quest-name'><h2>Quest 1</h2><h3>What Is Bullying?</h3></div>
       <div class='quest-launch'></div>
     </div>
   </div>
   <div class='wayfinding'>
+    <div class='wayfinding-sky'></div>
+    <div class='wayfinding-pathway'></div>
     <div class='wayfinding-intro'><div class="video kimberly"></div></div>
     <div class='wayfinding-section break-it-down'><div class="label">Break it Down</div>
     </div><div class='wayfinding-section behind-the-scenes'><div class="label">Behind the Scenes</div>
