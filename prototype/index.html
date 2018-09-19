@@ -15,7 +15,10 @@
         $mask.css({width:o.w,height:o.h})
 
         var $video = $('<video src="'+src+'" autoplay muted loop>').appendTo($mask)
-
+        if(o.stillAtTime != undefined){
+          $video.removeAttr('autoplay');
+          $video[0].currentTime = o.stillAtTime;
+        }
 
         if(o.scale)$video.css({'transform-origin':'left top',transform:'scale('+o.scale+')'})
         if(o.fx != undefined){
@@ -60,7 +63,7 @@
                     isRewinding = false;
                     clearInterval(interval);
                   }
-                }.bind(this),100);
+                }.bind(this),50);
 
 
 
@@ -80,14 +83,29 @@
       makeClippedVideo({boomerang:false,startAt:7,endAt:8,fx:440,fy:150,scale:0.2,w:50,h:50,$el:$('.quest-part').eq(1)})
       makeClippedVideo({boomerang:false,startAt:9.5,endAt:11,fx:440,fy:150,scale:0.2,w:50,h:50,$el:$('.quest-part').eq(2)})
       makeClippedVideo({boomerang:false,startAt:22,endAt:23.5,fx:440,fy:70,scale:0.5,w:50,h:50,$el:$('.quest-part').eq(3)})
-  
-      makeClippedVideo({boomerang:true,startAt:17,endAt:23.5,fx:427,fy:240,scale:1,w:480,h:480,$el:$('.video.opening')})
       makeClippedVideo({boomerang:true,startAt:22,endAt:23.5,fx:440,fy:70,scale:0.5,w:50,h:50,$el:$('.video.kimberly')})
-      makeClippedVideo({boomerang:true,startAt:13,endAt:16,fx:427,fy:240,scale:1,w:480,h:480,$el:$('.video.bullying')})
-      makeClippedVideo({boomerang:true,startAt:41,endAt:47,fx:500,fy:240,scale:1,w:480,h:480,$el:$('.video.discuss')})
+  
+      makeClippedVideo({boomerang:true,startAt:17,endAt:18.5,fx:427,fy:240,scale:1,w:480,h:480,$el:$('.video.kim1')})
+      makeClippedVideo({boomerang:false,startAt:18,endAt:22.5,fx:427,fy:240,scale:1,w:480,h:480,$el:$('.video.kim2')})
+      makeClippedVideo({boomerang:true,startAt:22,endAt:23.5,fx:427,fy:240,scale:1,w:480,h:480,$el:$('.video.kim3')})
 
-      makeClippedVideo({boomerang:false,startAt:19,endAt:21.5,fx:500,fy:240,scale:1,w:480,h:480,$el:$('.video.deeper')})
-      makeClippedVideo({boomerang:true,startAt:22,endAt:23.5,fx:550,fy:240,scale:1,w:480,h:480,$el:$('.video.backstory')})
+      makeClippedVideo({boomerang:false,startAt:17,endAt:23.5,fx:427,fy:240,scale:1,w:480,h:480,$el:$('.video.acid')})
+      makeClippedVideo({boomerang:false,startAt:24,endAt:26,fx:427,fy:240,scale:1,w:480,h:480,$el:$('.video.girls')})
+      makeClippedVideo({boomerang:true,startAt:21,endAt:22.5,fx:427,fy:240,scale:1,w:480,h:480,$el:$('.video.more-harm')})
+      makeClippedVideo({boomerang:false,startAt:41.5,endAt:47,fx:500,fy:240,scale:1,w:480,h:480,$el:$('.video.know-now')})
+      makeClippedVideo({boomerang:false,stillAtTime:42.5,fx:550,fy:240,scale:1,w:480,h:480,$el:$('.video.journal')})
+
+      makeClippedVideo({boomerang:false,stillAtTime:4.5,fx:450,fy:240,scale:1,w:480,h:480,$el:$('.video.rollplay1')})
+      makeClippedVideo({boomerang:false,startAt:4.5,endAt:6.5,fx:450,fy:240,scale:1,w:480,h:480,$el:$('.video.rollplay2')})
+      makeClippedVideo({boomerang:false,stillAtTime:17,fx:450,fy:240,scale:1,w:480,h:480,$el:$('.video.rollplay3')})
+      makeClippedVideo({boomerang:false,stillAtTime:19,fx:450,fy:240,scale:1,w:480,h:480,$el:$('.video.rollplay4')})
+      makeClippedVideo({boomerang:false,stillAtTime:41.5,fx:550,fy:240,scale:1,w:480,h:480,$el:$('.video.rollplay5')})
+      makeClippedVideo({boomerang:false,stillAtTime:18,fx:250,fy:240,scale:1,w:480,h:480,$el:$('.video.rollplay6')})
+      makeClippedVideo({boomerang:false,stillAtTime:46.5,fx:500,fy:240,scale:1,w:480,h:480,$el:$('.video.rollplay7')})
+      makeClippedVideo({boomerang:false,startAt:41.5,endAt:47,fx:550,fy:240,scale:1,w:480,h:480,$el:$('.video.rollplay8')})
+
+      //makeClippedVideo({boomerang:false,startAt:19,endAt:21.5,fx:500,fy:240,scale:1,w:480,h:480,$el:$('.video.deeper')})
+      //makeClippedVideo({boomerang:false,startAt:22,endAt:23.5,fx:550,fy:240,scale:1,w:480,h:480,$el:$('.video.backstory')})
 
       var iSection = 0;
       var iPage = -1;
@@ -132,12 +150,21 @@
           n+= 2000;
         })
 
-        $('button.next').stop().removeClass('flash').delay(n).queue(function(){
+        $('.navigation').appendTo($sec.find('.content-page').eq(iPage));
+
+        $('button.next').finish().removeClass('flash').delay(n).queue(function(){
           $(this).addClass('flash');
         })
       }
 
       //nextPage();
+
+      $('.secret-message').each(function(){
+        var $el = $(this);
+        $(this).find('.secret-hint').click(function(){
+          $el.toggleClass('reveal');
+        })
+      })
 
       $('button.next').click(nextPage.bind(this));
 
@@ -345,6 +372,7 @@
       background: white;
       padding: 10px;
       border-radius: 5px;
+      position: relative;
     }
 
     .story{
@@ -355,37 +383,49 @@
       font-size: 18px;
     }
 
-    .story .line{
+    .line{
       margin-bottom: 20px;
       position: relative;
     }
 
     .navigation{
-      position: fixed;
+      position: absolute;
       right: 0px;
-      bottom: 50px;
+      bottom: 0px;
     }
 
     .navigation button.next{
-      width: 150px;
-      height: 150px;
-      font-size: 100px;
+      width: 100px;
+      height: 100px;
+      font-size: 60px;
       background: none;
       border: none;
       color: #777;
       outline: none;
       cursor: pointer;
-      opacity: 0.2;
       transition: all 0.1s;
+      position: absolute;
+      top: -80px;
+      left: -80px;
+      background: white;
+      border: 1px solid #999;
+      border-radius: 0px;
+      
+      color: white;
+      background: orange;
+      border-radius: 100px;
+      text-shadow: 0px -1px black;
+      box-shadow: inset 0px 1px white;
+
+      opacity: 0;
     }
 
     .navigation button.next:hover{
-      opacity: 1;
+      opacity: 0.5;
     }
 
     .navigation button.next.flash{
-      color: orange;
-      opacity: 0.8;
+      opacity: 1;
     }
 
     .quest{
@@ -508,6 +548,107 @@
       fill: linear-gradient(to right,#20C2E1,#A094EE);
     }
 
+    textarea{
+      width: 450px;
+      height: 200px;
+      font-family: inherit;
+      font-size: inherit;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .glossary{
+      font-weight: bold;
+      color: #997700;
+      position: relative;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .glossary-def{
+      font-weight: normal;
+      color: #999;
+      border: 1px solid #999;
+      font-size: 15px;
+      padding: 10px;
+      background: white;
+      position: absolute;
+      left: 0px;
+      top: 30px;
+      white-space: nowrap;
+      border-radius: 5px;
+      box-shadow: 0px 1px 5px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 1;
+    }
+
+    .glossary:hover .glossary-def{
+      display: block;
+    }
+
+    b{
+      color: black;
+    }
+
+    .leading-question{
+      font-style: italic;
+      color: orange;
+    }
+
+    .infographic{
+      font-size: 14px;
+      color: #999;
+    }
+
+    .intro-page{
+      background: none;
+      border: none;
+      text-align: center;
+    }
+
+    .intro-content{
+      text-align: left;
+      display: inline-block;
+    }
+
+    .secret-message{
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .secret-message .secret-hint{
+      width: 70px;
+      height: 70px;
+      line-height: 70px;
+      background: rgba(255,200,0,0.2);
+      display: inline-block;
+      font-size: 40px;
+      text-align: center;
+      border-radius: 5px;
+
+      transition: all 0.2s;
+      vertical-align: top;
+    }
+
+    .secret-message .secret-reveal{
+      width: 360px;
+      margin-left: 10px;
+      display: inline-block;
+      opacity: 0;
+      transition: all 0.2s;
+
+      font-size: 12px;
+      vertical-align: top;
+    }
+
+    .secret-message:hover .secret-hint,.secret-message.reveal .secret-hint{
+
+      background: rgba(255,200,0,1);
+    }
+
+    .secret-message.reveal .secret-reveal{
+      opacity:1;
+    }
 
   </style>
 </head>
@@ -542,56 +683,184 @@
   </div>
   <div class='content'>
     <div class='content-section'>
-      <div class="content-page">
-        <div class='video opening insta'></div>
-        <div class='story'>
-          <div class='line'>Kimberly Seymour looks upset after reading a post.</div>
-          <div class='line'>Kimberly used to be friends with the three girls who posted about her online. They were all in the same classes last year, ate lunch together every day, and went to the mall after school.</div>
-          <div class='line'>Kimberly is a victim of Cyberbullying.</div>
+      <div class="content-page intro-page">
+        <div class='line'><h2>Quest 1 Part 4: Cyberbullying</h2></div>
+        <div class='line'><h1>Break it Down</h1></div>
+        <div class='intro-content'>
+        <div class='line'><h3>Learning Checklist</h3></div>
+        <div class='line'><li>Explain what makes cyberbullying different from other aggressive acts</li></div>
+        <div class='line'><li>Identify the harmful effects of cyber-attacks</li></div>
+        <div class='line'><li>Describe what upstanders can do to build a strong digital community</li></div>
+        <div class='line'><li>Know your rights and how to defend yourself and others</li></div>
         </div>
       </div>
       <div class="content-page">
-        <div class='video bullying insta'></div>
+        <div class='video kim1 insta'></div>
         <div class='story'>
-          <div class='line'>What exactly does Cyberbullying look like?</div>
-          <div class='line'>Let's take a look...</div>
+<div class='line'>Now it’s time to learn more about cyberbullying. First, let’s begin by watching a brief clip about Kimberly. </div>
+<div class='line'>Pay close attention to what is happening to Kimberly in this situation and how the girls are acting.</div> 
+<div class='line'>You see three girls laughing together in the hallway. In the background, a girl named Kimberly stands by her locker alone.</div>
+        <div class='line'><div class='leading-question'>As you watch, think about what is the problem is in the story and what you think could be a solution?</div></div>
+        </div>
+      </div>
+      <div class='content-page'>
+        <div class='video kim2 insta'></div>
+        <div class='story'>
+<div class='line'>One of the three girls sends a message from her phone. The girls begin laughing and look over at Kimberly.</div>
+<div class='line'>Kimberly first looks excited to receive the text as she reaches into her locker. </div>
+<div class='line'>But as soon as she reads the message, her face changes. She does not look happy. </div>
+        </div>
+      </div>
+      <div class='content-page'>
+        <div class='video kim3 insta'></div>
+        <div class='story'>
+<div class='line'>Kimberly looks up and notices that the three girls are laughing.</div>
+<div class='line'>As Kimberly becomes more embarrassed and disappointed, the girls laugh even harder. </div>
+<div class='line'>Now, let’s break it down and discuss this scene.</div>
         </div>
       </div>
       <div class="content-page">
-        Khan Video?
+        <div class='video acid insta'></div>
+        <div class='story'>
+          <div class='line'>1. How can you use The ACID Test to identify this as bullying?
+            <hr>
+            <i>Click for hints</i>
+            <div class='secret-message'><div class='secret-hint'>A</div><div class='secret-reveal'><b>Aggressive</b> - While we can’t read the text, it looks like the girls are texting Kimberly something mean or cruel to make fun of her and put her down.</div></div>
+            <div class='secret-message'><div class='secret-hint'>C</div><div class='secret-reveal'><b>Continual</b> - While the text is instantaneous, cyberbullying is active and can happen 24/7 at any time or place place. Kimberly receives her text during school.</div></div>
+            <div class='secret-message'><div class='secret-hint'>I</div><div class='secret-reveal'><b>Imbalance of power</b> - Three girls appear to be ganging up on Kimberly. Because she is outnumbered three to one, this imbalance looks like a power imbalance.</div></div>
+            <div class='secret-message'><div class='secret-hint'>D</div><div class='secret-reveal'><b>Deliberate</b> - The girls intentionally text Kimberly, showing that they are targeting her directly.</div></div>
+            
+          </div>
+        </div>
       </div>
       <div class="content-page">
-        <div class='video insta discuss'></div>
+        <div class='video girls insta'></div>
+        <div class='story'>
+        <div class='line'>2. Why might the girls use cyberbullying over other forms of bullying to bully Kimberly?
+          <hr>
+          <i>Click for hints</i>
+          <div class='secret-message'><div class='secret-hint'>?</div><div class='secret-reveal'>Although in this situation, the girls are across the hall from Kimberly, their use of cyberbullying can allow them to act anonymously, seemingly free from consequences or punishment.</div></div>
+          <div class='secret-message'><div class='secret-hint'>?</div><div class='secret-reveal'>While we can’t tell if the girls posted on Facebook or Snapchat, or if they just sent a message, but we do know that they can reach lots of people. The message can be quickly and widely circulated to many other internet users, increasing the number of targets and bystanders involved.</div></div>
+        </div> 
+        </div>
+      </div>
+      <div class="content-page">
+        <div class='video more-harm insta'></div>
+        <div class='story'>
+        <div class='line'>3. Why might Kimberly be more harmed by cyberbullying?<hr>
+            <i>Click for hints</i>
+            <div class='secret-message'><div class='secret-hint'>?</div><div class='secret-reveal'>Because of the viral nature of bullying, Kimberly might be affected over time. The harm can live forever in cyberspace affecting her future reputation. What are some of the ways this might affect Kimberly’s future?</div></div>
+            <div class='secret-message'><div class='secret-hint'>?</div><div class='secret-reveal'>It’s very easy to be anonymous on the internet. The girls bullying Kimberly can be more cruel online in a way they never would be in real life.</div></div>
+          </div> 
+        </div>
+      </div>
+      <div class="content-page">
+        <div class='video insta know-now'></div>
         <div class="story">
-          <div class='line'>Discuss the following questions with your class.</div>
-          <div class='line'>💡 What are the characteristics of cyberbullying?</div>
-          <div class='line'>💡 What are the ways that cyberbullying can cause more harm?</div>
-          <div class='line'>💡 How has research changed the way we address cyberbullying?</div>
-        </div>
-      </div>
-    </div>
-    <div class='content-section'>
-      <div class='content-page'>
-        <div class='video insta deeper'></div>
-        <div class='story'>
-          <div class='line'>Let's look at Kimberly's story a little deeper.</div>
+          <div class='line'>4. What do you know now that might help to address bullying in Kimberly’s situation? What research helps to support this?<hr>
+            <i>Click for hints</i>
+            <div class='secret-message'><div class='secret-hint'>?</div><div class='secret-reveal'>There are a number of tools and tips for how you can respond in a cyberbullying situation. Think of some ways that you might help Kimberly in this situation.</div></div>
+            <div class='secret-message'><div class='secret-hint'>?</div><div class='secret-reveal'>The roles in the bullying cycle can change as environment or situations change. Now that you’ve put the ACID test to use to identify cyberbullying, you can be more aware of how to call it out.</div></div>
+          </div>
         </div>
       </div>
       <div class='content-page'>
-        <div class='video insta backstory'></div>
+        <div class='video insta journal'></div>
         <div class='story'>
-          <div class='line'>Kimberly Seymour used to be friends with the three girls in the same classes last year. As the year went on, however, Kimberly’s mother would not let her hang out after school. Instead, Kimberly had to come home and do her homework. It was true that more than anything else, she wanted to be a lawyer when she grew up and wanted to get a scholarship to a good school, but it was also true that it was really hard for her to tell her friends.</div><div class='line'>She could feel that something was wrong—almost like they were insulted. When eighth grade started, Kimberly was placed in advanced academic classes and none of her old friends were in any of her classes anymore. After just a few weeks, she began to notice her friends ignoring her.</div><div class='line'>There were a few times that she tried to hang out with them before class, and coldly they just moved away from her. After a few more weeks, she started reading rumors and seeing humiliating photos on Snapchat.</div>
+          <div class='line'>5. Journal question (short answer)</div>
+          <div class='line'>If you saw Kimberly bullied on Snapchat or Instagram, how could you use social media to help her?<br><textarea></textarea></div>
         </div>
       </div>
     </div>
     <div class='content-section'>
-      <div class='content-page'>Section 3 Page 1</div>
+      <div class="content-page intro-page">
+        <div class='line'><h1>Behind the Scenes</h1></div>
+        <div class='intro-content'>
+        <div class='line'><h3>Learning Checklist</h3></div>
+        <div class='line'><li>Connect with the feelings, thoughts and wishes of others</li></div>
+        </div>
+      </div>
+      <div class='content-page'>
+        <div class='video insta rollplay1'></div>
+        <div class='story'>
+          <div class='line'>Let's to do some role playing to see what it’s like to be Kimberly, the upstander, and the bystander.</div> 
+          <div class='line'>There are no right or wrong ways to act out these characters, just answer the questions as you think the character might answer them.<br><br><a target='_blank' href='./prompts.html'>Download roleplay prompts</a></div>
+          <div class='line'>Before, during, and after this activity, take a moment and reflect on what’s happening in your body. Use your BAND.
+            <hr><div class='infographic'><b>B</b>reathe<br><b>A</b>ttention to your breath<br><b>N</b>otice any feelings, emotions, or stray thoughts you may be having<br>
+              <b>D</b>irect your attention back to your breath</div>
+          </div>
+        </div>
+      </div>
+      <div class='content-page'>
+        <div class='video insta rollplay2'></div>
+        <div class='story'>
+          <div class='line'>You’ve played the characters. Now let’s learn some more about Kimberly so we can understand what she is thinking and feeling, and why her friends might be acting the way they are.</div> 
+        </div>
+      </div>
+      
+      <div class='content-page'>
+        <div class='video insta rollplay3'></div>
+        <div class='story'>
+          <div class="line">Kimberly Seymour used to be friends with the three girls who send her <div class='glossary'>cruel<div class='glossary-def'><b>Cruel:</b> (adjective)<br>Willfully causing pain or suffering to others,<br>or feeling no concern about it.</div></div> texts now. They were all in the same classes last year, ate lunch together every day, and went to the mall after school.</div>
+          <div class="line">As the year went on, however, Kimberly’s mother would not let her hang out after school. Instead, Kimberly had to come home and do her homework.</div>
+          <div class="line"><div class='leading-question'>What does Kimberly’s experience at home tell you about her family life?</div></div>
+        </div>
+      </div>
+      <div class='content-page'>
+        <div class='video insta rollplay4'></div>
+        <div class='story'>
+          <div class='line'>It was true that more than anything else, she wanted to be a lawyer when she grew up and wanted to get a <div class='glossary'>scholarship<div class='glossary-def'><b>Scholarship:</b> (noun)<br>A grant or payment made to support a student’s education,<br>awarded on the basis of academic or other achievement.</div></div> to a good school, but it was also true that it was really hard for her to tell her friends. She could feel that something was wrong—almost like they were <div class="glossary">insulted<div class="glossary-def"><b>insult:</b> (verb)<br>Speak to or treat with disrespect or scornful abuse.</div></div>.</div>
+          <div class='line'><div class='leading-question'>What is most important to Kimberly?</div></div>
+        </div>
+      </div>
+      <div class='content-page'>
+        <div class='video insta rollplay5'></div>
+        <div class='story'>
+          <div class='line'>When eighth grade started, Kimberly was placed in advanced academic classes and none of her old friends were in any of her classes anymore.</div>
+          <div class='line'><div class='leading-question'>How do you think this made Kimberly feel to be apart from her friends?</div></div>
+        </div>
+      </div>
+      <div class='content-page'>
+        <div class='video insta rollplay6'></div>
+        <div class='story'>
+          <div class='line'>After just a few weeks, she began to notice her friends ignoring her. There were a few times that she tried to hang out with them before class, and coldly they just moved away from her.</div>
+          <div class='line'><div class='leading-question'>Why do you think her friends started ignoring her?</div></div>
+        </div>
+      </div>
+      <div class='content-page'>
+        <div class='video insta rollplay7'></div>
+        <div class='story'>
+          <div class='line'>After a few more weeks, she started reading <div class='glossary'>rumors<div class='glossary-def'><b>rumors:</b> (n.)<br>A statement or report current without known authority for its truth.</div></div> and seeing <div class='glossary'>humiliating<div class='glossary-def'><b>Humiliation:</b><br> to make (someone) ashamed or embarrassed.</div></div> photos on Snapchat.</div>
+          <div class='line'><div class='leading-question'>If you read these rumors or saw these photos, how would you respond to help Kimberly?</div></div>
+        </div>
+      </div>
+      <div class='content-page'>
+        <div class='video insta rollplay8'></div>
+        <div class='story'>
+          <div class='line'><b>Reach Out</b></div>
+          <div class='line'>There’s a number of things you can do to help Kimberly in this situation.</div>
+          <div class='line'><li>You can post words of support to Kimberly and encourage her to get help.</li></div>
+          <div class='line'><li>You can take screenshots and reporting the incident to an adult or even police.</li></div>
+        </div>
+      </div>
     </div>
     <div class='content-section'>
-      <div class='content-page'>Section 4 Page 1</div>
+      <div class="content-page intro-page">
+        <div class='line'><h2>Quest 1 Part 4: Cyberbullying</h2></div>
+        <div class='line'><h1>Just the Facts</h1></div>
+      </div>
     </div>
     <div class='content-section'>
-      <div class='content-page'>Section 5 Page 1</div>
+      <div class="content-page intro-page">
+        <div class='line'><h2>Quest 1 Part 4: Cyberbullying</h2></div>
+        <div class='line'><h1>We Got Game</h1></div>
+      </div>
+    </div>
+    <div class='content-section'>
+      <div class="content-page intro-page">
+        <div class='line'><h2>Quest 1 Part 4: Cyberbullying</h2></div>
+        <div class='line'><h1>Final Challenge</h1></div>
+      </div>
     </div>
   </div>
   <div class='navigation'><button class='next'>⇨</button></div>
