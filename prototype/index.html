@@ -166,6 +166,17 @@
         })
       })
 
+      $('.question').each(function(){
+        var $el = $(this);
+        $el.find('.feedback').hide();
+        $el.find('button').click(function(){
+          var i = $el.find('button').removeClass('selected').index(this);
+          $(this).addClass('selected');
+          $el.addClass('complete');
+          $el.find('.feedback').hide().eq(i).show();
+        })
+      })
+
       $('button.next').click(nextPage.bind(this));
 
       $('.wayfinding').hide();
@@ -299,7 +310,7 @@
     .wayfinding-section.break-it-down:after{background-image: url('./icon-thoughts.png');}
     .wayfinding-section.we-got-game:after{background-image: url('./icon-game.png');}
     .wayfinding-section.behind-the-scenes:after{background-image: url('./icon-clapper.png');}
-    .wayfinding-section.just-the-facts:after{background-image: url('./icon-magnifying-glass.png');}
+    .wayfinding-section.write-to-the-point:after{background-image: url('./icon-pencil.png');}
     .wayfinding-section.final-challenge:after{background-image: url('./icon-bullseye.png');}
 
     .wayfinding-section.break-it-down{
@@ -317,7 +328,7 @@
       left: 210px;
     }
 
-    .wayfinding-section.just-the-facts{
+    .wayfinding-section.write-to-the-point{
       left: 312px;
       top:10px;
     }
@@ -358,6 +369,7 @@
       border-radius: 5px;
       display: inline-block;
       overflow: hidden;
+      margin-right: 20px;
     }
 
     .content{
@@ -377,10 +389,10 @@
 
     .story{
       display: inline-block;
-      width: 490px;
+      width: 470px;
       vertical-align: top;
-      padding-left: 20px;
       font-size: 18px;
+      margin: 0px 10px;
     }
 
     .line{
@@ -614,6 +626,7 @@
     .secret-message{
       margin-top: 10px;
       cursor: pointer;
+      position: relative;
     }
 
     .secret-message .secret-hint{
@@ -650,6 +663,100 @@
       opacity:1;
     }
 
+    .secret-message.popup .secret-hint{
+      display: block;
+      font-size: inherit;
+      padding: 0px;
+      font-size: 20px;
+      line-height: 30px;
+      height: 30px;
+      text-align: left;
+      color: rgba(255,200,0,1);
+      background: none;
+      width: auto;
+    }
+
+    .secret-message.popup .secret-hint:before{
+      content: "?";
+      display: inline-block;
+      color: white;
+      font-size: 15px;
+      background: rgba(255,200,0,1);
+      border-radius: 5px;
+      width: 30px;
+      margin-right: 10px;
+      text-align:center;
+    }
+
+    .secret-message.popup .secret-reveal{
+      display: none;
+      position: absolute;
+      left: 0px;
+      top: 35px;
+      right: 0px;
+      padding: 10px;
+      background: white;
+      width: auto;
+      border: 1px solid rgba(255,200,0,1);
+      border-radius: 5px;
+      z-index: 1;
+    }
+
+    .secret-message.popup.reveal .secret-reveal{
+      display: block;
+    }
+
+    .question{
+      text-align: center;
+      background: none;
+      border: none;
+      font-size: 20px;
+      width: 700px;
+    }
+
+    .question button:not(.next){
+      display: inline-block;
+      width: 700px;
+      font-family: inherit;
+      font-size: inherit;
+      background: #6ECCCA;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #999;
+      border-radius: 5px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .question button.selected{
+      background: orange;
+    }
+
+    .question .feedback{
+      margin-top:10px;
+      padding: 10px;
+      background: white;
+      border: 1px solid #999;
+      border-radius: 5px;
+      width: 700px;
+      display: inline-block;
+      box-sizing: border-box;
+      margin-bottom: 50px;
+    }
+
+    .question button.next{
+      display: none !important;
+    }
+
+    .question.complete button.next{
+      display: inline-block !important;
+    }
+
+    .outro-page button.next{
+      display: none !important;
+    }
+
+
   </style>
 </head>
 <body>
@@ -674,9 +781,9 @@
     <div class='wayfinding-intro'><div class="video kimberly"></div></div>
     <div class='wayfinding-section break-it-down'><div class="label">Break it Down</div>
     </div><div class='wayfinding-section behind-the-scenes'><div class="label">Behind the Scenes</div>
-    </div><div class='wayfinding-section just-the-facts'><div class="label">Just the Facts</div>
+    </div><div class='wayfinding-section write-to-the-point'><div class="label">Write to the Point</div>
     </div><div class='wayfinding-section we-got-game'><div class="label">We Got Game</div>
-    </div><div class='wayfinding-section final-challenge'><div class="label">Final Challenge</div></div>
+    </div><div class='wayfinding-section final-challenge'><div class="label">Challenge Yourself</div></div>
   </div>
   <div class='stations'>
     <div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div><div class='station'></div>
@@ -700,7 +807,7 @@
 <div class='line'>Now it’s time to learn more about cyberbullying. First, let’s begin by watching a brief clip about Kimberly. </div>
 <div class='line'>Pay close attention to what is happening to Kimberly in this situation and how the girls are acting.</div> 
 <div class='line'>You see three girls laughing together in the hallway. In the background, a girl named Kimberly stands by her locker alone.</div>
-        <div class='line'><div class='leading-question'>As you watch, think about what is the problem is in the story and what you think could be a solution?</div></div>
+        <div class='line'><div class='leading-question'>As you watch, think about what the problem is in the story and what you think could be a solution.</div></div>
         </div>
       </div>
       <div class='content-page'>
@@ -726,8 +833,8 @@
             <hr>
             <i>Click for hints</i>
             <div class='secret-message'><div class='secret-hint'>A</div><div class='secret-reveal'><b>Aggressive</b> - While we can’t read the text, it looks like the girls are texting Kimberly something mean or cruel to make fun of her and put her down.</div></div>
-            <div class='secret-message'><div class='secret-hint'>C</div><div class='secret-reveal'><b>Continual</b> - While the text is instantaneous, cyberbullying is active and can happen 24/7 at any time or place place. Kimberly receives her text during school.</div></div>
-            <div class='secret-message'><div class='secret-hint'>I</div><div class='secret-reveal'><b>Imbalance of power</b> - Three girls appear to be ganging up on Kimberly. Because she is outnumbered three to one, this imbalance looks like a power imbalance.</div></div>
+            <div class='secret-message'><div class='secret-hint'>C</div><div class='secret-reveal'><b>Continual</b> - While the text is instantaneous, cyberbullying is active and can happen 24/7 at any time or place. Kimberly receives her text during school.</div></div>
+            <div class='secret-message'><div class='secret-hint'>I</div><div class='secret-reveal'><b>Imbalance of power</b> - Three girls appear to be ganging up on Kimberly. Because she is outnumbered three to one, this looks like a power imbalance.</div></div>
             <div class='secret-message'><div class='secret-hint'>D</div><div class='secret-reveal'><b>Deliberate</b> - The girls intentionally text Kimberly, showing that they are targeting her directly.</div></div>
             
           </div>
@@ -767,7 +874,7 @@
       <div class='content-page'>
         <div class='video insta journal'></div>
         <div class='story'>
-          <div class='line'>5. Journal question (short answer)</div>
+          <div class='line'>5. Journal question</div>
           <div class='line'>If you saw Kimberly bullied on Snapchat or Instagram, how could you use social media to help her?<br><textarea></textarea></div>
         </div>
       </div>
@@ -847,7 +954,57 @@
     <div class='content-section'>
       <div class="content-page intro-page">
         <div class='line'><h2>Quest 1 Part 4: Cyberbullying</h2></div>
-        <div class='line'><h1>Just the Facts</h1></div>
+        <div class='line'><h1>Write to the Point</h1></div>
+        <div class='intro-content'>
+          <div class='line'><h3>Learning Checklist</h3></div>
+          <div class='line'><li>Describe a time when you saw cyberbullying take place</li></div>
+        </div>
+      </div>
+
+      <div class='content-page'>
+        <div class='story'>
+          <div class='line'>Now that you’ve explored Kimberly’s story, it’s time to reflect on your own experiences.</div>
+          <div class='line'><div class='leading-question'>Tell a story of a time when you saw<br>cyberbullying take place.</div><textarea></textarea></div>
+          
+        </div>
+        <div class='story'>
+          <div class='line'>
+            <i>Click for hints</i>
+            <div class='secret-message popup'>
+              <div class='secret-hint'>Heads Up</div>
+              <div class='secret-reveal'>
+                <li>What was the cyberbullying incident that you saw?</li>
+                <li>Where did the situation occur (Facebook, Snapchat, Instagram, text message)?</li>
+                <li>Describe the beginning, middle, and end.</li>
+                <li>Who was threatened in this situation?</li>
+                <li>How did you feel?</li>
+                <li>What did you want to do and what did you do when you saw it happening?</li>
+                <li>What did other people do?</li>
+                <li>How might you have responded differently today if faced with the same situation?</li>
+              </div>
+            </div>
+            <div class='secret-message popup'>
+              <div class='secret-hint'>Double Check</div>
+              <div class='secret-reveal'>
+                <li>Did you start all your sentences with a capital letter?</li>
+                <li>Did you include a subject and a verb in all your sentences?</li>
+                <li>Did you end your sentences with a period, question mark, or exclamation point?</li>
+                <li>Do your subject and verb agree?</li>
+                <hr>
+                <div style='display:inline-block;text-align:center;padding: 0px 10px;'><b>Plural Noun</b><br>boys play<br>girls sing<br>women drive<br>men cook</div>
+                <div style='display:inline-block;text-align:center;padding: 0px 10px;'><b>Singular Noun</b><br>boy plays<br>girl sings<br>woman drives<br>man cooks</div>
+              </div>
+            </div>
+            <div class='secret-message popup'>
+              <div class='secret-hint'>Bullseye</div>
+              <div class='secret-reveal'>Before you submit, use the mouse (right-click) to copy and paste your journal into Word, do a spell and grammar check, then paste it back into the text box and click Submit.</div>
+            </div>
+            <div class='secret-message popup'>
+              <div class='secret-hint'>Writing Sample</div>
+              <div class='secret-reveal'>I started going to a new high school and had to ride the bus to get there. Greg and his friends from the football team were these older kids and every time I sat down they told me to get up and threw their backpacks on all the empty seats. They pushed me down the aisle, and every time the bus driver screamed at me to sit down so she could drive.<br><br>I didn’t know who to talk to, but I found myself telling my English teacher, Ms. Stevens. She told me that she could talk to Greg, that she knew him well. Then she said she would make a deal with me, if I started an anti-bullying campaign—shared stories with other kids of what happens to the whole group when we let kids bully other kids, asked them to help me write signs to post all over, and stand together whenever we see bullying. I did that and after my first year here, I was voted vice-president of the class.</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class='content-section'>
@@ -859,7 +1016,68 @@
     <div class='content-section'>
       <div class="content-page intro-page">
         <div class='line'><h2>Quest 1 Part 4: Cyberbullying</h2></div>
-        <div class='line'><h1>Final Challenge</h1></div>
+        <div class='line'><h1>Challenge Yourself</h1></div>
+        <div class='intro-content'>
+          <div class='line'><h3>Learning Checklist</h3></div>
+          <div class='line'><li>Explain what makes cyberbullying different from other aggressive acts</li></div>
+          <div class='line'><li>Identify the harmful effects of cyber-attacks</li></div>
+          <div class='line'><li>Describe what upstanders can do to build a strong digital community</li></div>
+          <div class='line'><li>Know your rights and how to defend yourself and others</li></div>
+        </div>
+      </div>
+      <div class='content-page question'>
+        <div class='question-text'>Cyberbullying is bullying by use of technology, such as cell phones, computers, or tablets.</div>
+        <button>True</button>
+        <button>False</button>
+        <div class='feedback'>That’s correct. Cyberbullying differs from face-to-face bullying in that it can be done through use of technology.</div>
+        <div class='feedback'>Try again. Think about what the word “cyber” means.</div>
+      </div>
+      <div class='content-page question'>
+        <div class='question-text'>In what ways is cyberbullying different and perhaps more dangerous from other forms of bullying?</div>
+        <button>People who bully can hide and are less likely to feel guilty when bullying online.</button>
+        <button>An online comment can be seen 24/7 (continuously) and permanently.</button>
+        <button>Posting one text or photo on social media can be seen by an uncontrolled number of people causing greater harm.</button>
+        <button>All of the above</button>
+        <div class="feedback">Correct, but is just one example. Cyberbullying can be anonymous. Because of this, bullies cannot see the reactions of their victims and studies have shown that they feel less remorse (Peebles, 2014). Can you find any others?</div>
+        <div class="feedback">Correct, but is just one example. Students are more vulnerable to long-term and long-lasting effects: those who post without thinking can be subject to criminal suits, and those who are targets can suffer more serious health issues. Can you find any others?</div>
+        <div class="feedback">Correct, but is just one example. A larger and accepting passive audience can cause deeper humiliation. On the other hand, if that audience is aware and informed, this may improve the likelihood that someone might stand up for the target. See if you can find other ways.</div>
+        <div class="feedback">You got it! Cyberbullying can be anonymous, is continuous and permanent in that it can occur 24/7, and can reach a large number of people.</div>
+      </div>
+      <div class='content-page question'>
+        <div class='question-text'>True or False: Sharing a post making fun of someone on social media is considered cyberbullying.</div>
+        <button>True</button>
+        <button>False</button>
+        <div class="feedback">That’s correct. Targeting people on social media is an example of cyberbullying.</div>
+        <div class="feedback">Try again. Think about what it means to make fun of someone.</div>
+      </div>
+      <div class='content-page question'>
+        <div class='question-text'>True or False: Cyberbullying can only occur while students are at school.</div>
+        <button>True</button>
+        <button>False</button>
+        <div class="feedback">Try again. Since cyberbullying is done through technology, in can happen anywhere technology is accessible.</div>
+        <div class="feedback">That’s correct. Cyberbullying can occur anywhere you can view, participate in or share content online, such as: text, apps, social media, forums, or gaming.</div>
+      </div>
+      <div class='content-page question'>
+        <div class='question-text'>What can you do to help others if you see them being bullied online?</div>
+        <button>Post a word of support.</button>
+        <button>Don’t say anything.</button>
+        <div class="feedback">That’s correct! You have the power to help break the bullying cycle by speaking out when you see cyberbullying take place.</div>
+        <div class="feedback">Try again. Staying silent can allow the bullying cycle to continue. If you are a bystander to bullying, you can help break the cycle by calling it out.</div>
+      </div>
+      <div class='content-page question'>
+        <div class='question-text'>How can you protect yourself and others from cyberbullying?</div>
+        <button>Follow basic internet safety rules.</button>
+        <button>Document and report any cyberbullying.</button>
+        <button>Don’t give anyone your computer or email password.</button>
+        <button>All of the above.</button>
+        <div class="feedback">That’s correct, but there are other ways. Can you find any other examples of how to protect yourself and others?</div>
+        <div class="feedback">That’s correct, but there are other ways. Can you find any other examples of how to protect yourself and others?</div>
+        <div class="feedback">That’s correct, but there are other ways. Can you find any other examples of how to protect yourself and others?</div>
+        <div class="feedback">That’s correct! There are lots of ways you can protect yourself and others from cyberbullying.</div>
+      </div>
+      <div class="content-page intro-page outro-page">
+        <div class='line'><h1>Congratulations!</h1></div>
+        <div class='line'><h2>You’ve made it one more step in your journey toward being an upstander!</h2></div>
       </div>
     </div>
   </div>
